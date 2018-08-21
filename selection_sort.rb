@@ -1,4 +1,4 @@
-require 'pry'
+# require 'pry'
 
 class SelectionSort
   def self.sort!(array)
@@ -7,6 +7,8 @@ class SelectionSort
       swap(array: array, first_index: index, second_index: minimum_index)
     end
   end
+
+  private
 
   def self.index_of_minimum(array:, start_index:)
     min_value = array[start_index]
@@ -42,4 +44,4 @@ sorted_primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37,
                  41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
 
 assert_equal SelectionSort.sort!(primes), sorted_primes
-puts SelectionSort.sort!(primes)
+# puts SelectionSort.sort!(primes)
