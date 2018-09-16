@@ -1,5 +1,9 @@
 class MergeSort
-  def self.sort!(array:, start_index:, finish_index:)
+  def initialize(array)
+    @array = array
+  end
+
+  def sort!(array: @array, start_index: 0, finish_index: @array.size - 1)
     if start_index < finish_index
       half = (start_index + finish_index) / 2
       sort!(array: array, start_index: start_index, finish_index: half)
@@ -10,34 +14,41 @@ class MergeSort
 
   private
 
-  def self.merge(array:, start_index:, half:, finish_index:)
-    low_half = array[start_index..half]
-    high_half = array[(half + 1)..finish_index]
-    i = 0
-    j = 0
-    k = start_index
+  def merge(array:, start_index:, half:, finish_index:)
+    initialize_merge(array: array,
+                     start_index: start_index,
+                     half: half,
+                     finish_index: finish_index)
+    compare_lowest_untaken_elements(array)
+    copy_remaining_elements(array: array, array_half: @low_half, array_half_index: @low_half_index)
+    copy_remaining_elements(array: array, array_half: @high_half, array_half_index: @high_half_index)
+  end
 
-    while i < low_half.length && j < high_half.length
-      if low_half[i] < high_half[j]
-        array[k] = low_half[i]
-        i += 1
+  def initialize_merge(array:, start_index:, half:, finish_index:)
+    @low_half = array[start_index..half]
+    @high_half = array[(half + 1)..finish_index]
+    @low_half_index = 0
+    @high_half_index = 0
+    @array_index = start_index
+  end
+
+  def compare_lowest_untaken_elements(array)
+    while @low_half_index < @low_half.size && @high_half_index < @high_half.size
+      if @low_half[@low_half_index] < @high_half[@high_half_index]
+        array[@array_index] = @low_half[@low_half_index]
+        @low_half_index += 1
       else
-        array[k] = high_half[j]
-        j += 1
+        array[@array_index] = @high_half[@high_half_index]
+        @high_half_index += 1
       end
-      k += 1
+      @array_index += 1
     end
+  end
 
-    while i < low_half.length
-      array[k] = low_half[i]
-      i += 1
-      k += 1
-    end
-
-    while j < high_half.length
-      array[k] = high_half[j]
-      j += 1
-      k += 1
+  def copy_remaining_elements(array:, array_half:, array_half_index:)
+    array_half[array_half_index..-1].each do |value|
+      array[@array_index] = value
+      @array_index += 1
     end
   end
 end
